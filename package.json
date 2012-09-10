@@ -1,0 +1,19 @@
+{
+  "description": "Raspberry Pi GPIO XMPP (Gtalk) bot interface based on njsbot project",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "request": "2.11.1",
+    "util": "0.4.9",
+    "node-stringprep": "0.1.5",
+    "node-expat": "1.6.1",
+    "ltx": "0.2.2",
+    "node-xmpp ": "0.3.2"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "name": "Raspberrypi_GPIO_njsbot",
+  "author": "Nelson Neves",
+  "homepage": "/"
+}
