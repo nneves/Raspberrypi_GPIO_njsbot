@@ -4,6 +4,30 @@ This idea for this project is to extend the [https://github.com/nneves/Raspberry
 
 To make things simpler and isolated, the Google Talk Bot will run independently from the origial project, using REST (and maybe latter websockets) to SET/RESET the RaspberryPi GPIOS.
 
+(Work In Progress ...)
+
+Install and run
+------------------
+How to compile node.js on a RaspberryPi
+https://github.com/nneves/Raspberrypi_NodeJS
+
+Install Node.js necessary packages
+```bash
+git clone git://github.com/nneves/Raspberrypi_GPIO_njsbot.git
+
+cd Raspberrypi_GPIO_njsbot
+
+npm install
+```
+
+Run Google Talk Bot
+```bash
+node app.js
+
+or (for quick testing)
+
+npm start
+```
 
 Gtalk/XMPP original source code
 ------------------
