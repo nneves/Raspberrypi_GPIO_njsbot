@@ -11,6 +11,11 @@ Install and run
 How to compile node.js on a RaspberryPi
 https://github.com/nneves/Raspberrypi_NodeJS
 
+Install the necessary Linux Debian libraries
+```bash
+sudo apt-get install openssl libssl-dev libexpat1-dev 
+```
+
 Install Node.js necessary packages
 ```bash
 git clone git://github.com/nneves/Raspberrypi_GPIO_njsbot.git
