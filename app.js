@@ -92,11 +92,12 @@ function execute_bot() {
      * @param {String} to_jid
      */
     function send_help_information(to_jid) {
-        var message_body = "Currently 'bounce', 'status' and 'twitter' are supported:\n";
-        message_body += "b;example text\n";
-        message_body += "t;some search string\n";
-        message_body += "s;A new status message\n\n";
-        message_body += "See http://njsbot.simonholywell.com/ for more information.\n";
+        var message_body = "Currently 'echo, 'set' and 'reset' are supported:\n";
+        message_body += "echo=example text\n";
+        message_body += "set=gpio_04\n";
+        message_body += "reset=gpio_17\n\n";
+         message_body += "set=gpio_04,gpio_17,gpio_25\n\n";
+        message_body += "gpio list: {04, 17, 21, 22, 23, 24, 25}.\n";
         send_message(to_jid, message_body);
     }
 
@@ -161,18 +162,19 @@ function execute_bot() {
      * Bounce any message the user sends to the bot back to them
      * @param {Object} request
      */
-    add_command('b', function(request) {
+    add_command('echo', function(request) {
         send_message(request.stanza.attrs.from, request.stanza.getChildText('body'));
         return true;
     });
 
     /**
-     * Search twitter for the provided term and give back 5 tweets
+     * Set GPIO output
      * @param {Object} request
      */
-    add_command('t', function(request) {
+    add_command('set', function(request) {
         var to_jid = request.stanza.attrs.from;
-        send_message(to_jid, 'Searching twitter, please be patient...');
+        send_message(to_jid, 'Received cmd (set):'+request.argument);
+        /*
         var url = 'http://search.twitter.com/search.json?rpp=5&show_user=true&lang=en&q='
                 + encodeURIComponent(request.argument);
         request_helper(url, function(error, response, body){
@@ -189,6 +191,7 @@ function execute_bot() {
                 send_message(to_jid, 'Twitter was unable to provide a satisfactory response. Please try again.');
             }
         });
+*/
         return true;
     });
 
@@ -196,10 +199,9 @@ function execute_bot() {
      * Set the bot's status message to the provided term
      * @param {Object} request
      */
-    add_command('s', function(request) {
-        //set_status_message(request.argument);
+    add_command('message', function(request) {
+        set_status_message(request.argument);
         send_message(request.stanza.attrs.from, "Status message now set to " + request.argument);
-        send_message(request.stanza.attrs.from, "This feature has been disabled on this public bot due to abuse. Sorry");
         return true;
     });
 

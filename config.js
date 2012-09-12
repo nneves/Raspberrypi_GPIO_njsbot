@@ -8,5 +8,5 @@ exports.settings = {
         "reconnect": true
     },
     "allow_auto_subscribe": false,
-    "command_argument_separator": /\s*\;\s*/
+    "command_argument_separator": /\s*\=\s*/
 };
