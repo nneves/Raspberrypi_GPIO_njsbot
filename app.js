@@ -1,6 +1,8 @@
 
 const config = require('./config.js').settings;
 
+var http = require('http');
+
 execute_bot();
 
 function execute_bot() {
@@ -92,12 +94,12 @@ function execute_bot() {
      * @param {String} to_jid
      */
     function send_help_information(to_jid) {
-        var message_body = "Currently 'echo, 'set' and 'reset' are supported:\n";
+        var message_body = "Currently 'echo, 'on' and 'off' are supported:\n";
         message_body += "echo=example text\n";
-        message_body += "set=gpio_04\n";
-        message_body += "reset=gpio_17\n\n";
-         message_body += "set=gpio_04,gpio_17,gpio_25\n\n";
-        message_body += "gpio list: {04, 17, 21, 22, 23, 24, 25}.\n";
+        message_body += "on=04\n";
+        message_body += "off=17\n";
+        message_body += "on=04,17,25\n\n";        
+        message_body += "on/off gpio list: {04, 17, 21, 22, 23, 24, 25}.\n";
         send_message(to_jid, message_body);
     }
 
@@ -168,12 +170,32 @@ function execute_bot() {
     });
 
     /**
-     * Set GPIO output
+     * Set GPIO output (on cmd)
      * @param {Object} request
      */
-    add_command('set', function(request) {
+    add_command('on', function(request) {
         var to_jid = request.stanza.attrs.from;
-        send_message(to_jid, 'Received cmd (set):'+request.argument);
+        send_message(to_jid, 'Received gpio \'on\' cmd:'+request.argument);
+
+        // need to parse multiple comand args: on=04,17,25 and add it to the path 
+        // (sill requires RaspberryPi_GPIO REST support on multiple cmd args)
+
+        var options = {
+            host: 'workbench01',
+            port: '8080',
+            method: 'GET',
+            path: "/gpio/SET_GPIO_"+request.argument
+        };
+
+        var req = http.request(options, function(res) {
+            console.log("\r\nStatus: "+res.statusCode);
+            console.log("\r\nHeaders: "+JSON.stringify(res.headers));
+            res.on('data', function(chunk) {
+                console.log("Response: "+chunk+"\r\n");
+            });
+        });        
+        req.end();
+
         /*
         var url = 'http://search.twitter.com/search.json?rpp=5&show_user=true&lang=en&q='
                 + encodeURIComponent(request.argument);
@@ -192,6 +214,36 @@ function execute_bot() {
             }
         });
 */
+        return true;
+    });
+
+    /**
+     * Reset GPIO output (off cmd)
+     * @param {Object} request
+     */
+    add_command('off', function(request) {
+        var to_jid = request.stanza.attrs.from;
+        send_message(to_jid, 'Received gpio \'off\' cmd:'+request.argument);
+
+        // need to parse multiple comand args: on=04,17,25 and add it to the path 
+        // (sill requires RaspberryPi_GPIO REST support on multiple cmd args)
+
+        var options = {
+            host: 'workbench01',
+            port: '8080',
+            method: 'GET',
+            path: "/gpio/RESET_GPIO_"+request.argument
+        };
+
+        var req = http.request(options, function(res) {
+            console.log("\r\nStatus: "+res.statusCode);
+            console.log("\r\nHeaders: "+JSON.stringify(res.headers));
+            res.on('data', function(chunk) {
+                console.log("Response: "+chunk+"\r\n");
+            });
+        });        
+        req.end();
+
         return true;
     });
 
