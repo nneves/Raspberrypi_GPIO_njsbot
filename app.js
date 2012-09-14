@@ -180,11 +180,34 @@ function execute_bot() {
         // need to parse multiple comand args: on=04,17,25 and add it to the path 
         // (sill requires RaspberryPi_GPIO REST support on multiple cmd args)
 
+        // check if it contains a multiple commands (will use , as separator)
+        var send_cmd;
+        if(request.argument.indexOf(",") != -1) {
+
+            var request_array=request.argument.split(",");
+            var request_cmd;
+
+            for(var i=0, len=request_array.length; i<len; i++) {
+                request_cmd=unescape(request_array[i].replace(/\+/g, " ")); // url decode
+                if(i==0)
+                    send_cmd = "SET_GPIO_"+request_cmd;
+                else 
+                    send_cmd = send_cmd+"--SET_GPIO_"+request_cmd;
+            }
+        }
+        else {
+            var request0=request.argument;
+            request0=unescape(request0.replace(/\+/g, " ")); // url decode
+            send_cmd = "SET_GPIO_"+request0;
+        }
+
+        console.log("\r\nSEND_CMD: "+send_cmd);
+
         var options = {
             host: 'workbench01',
             port: '8080',
             method: 'GET',
-            path: "/gpio/SET_GPIO_"+request.argument
+            path: "/gpio/"+send_cmd
         };
 
         var req = http.request(options, function(res) {
@@ -225,14 +248,37 @@ function execute_bot() {
         var to_jid = request.stanza.attrs.from;
         send_message(to_jid, 'Received gpio \'off\' cmd:'+request.argument);
 
-        // need to parse multiple comand args: on=04,17,25 and add it to the path 
+        // need to parse multiple comand args: off=04,17,25 and add it to the path 
         // (sill requires RaspberryPi_GPIO REST support on multiple cmd args)
+
+        // check if it contains a multiple commands (will use , as separator)
+        var send_cmd;
+        if(request.argument.indexOf(",") != -1) {
+
+            var request_array=request.argument.split(",");
+            var request_cmd;
+
+            for(var i=0, len=request_array.length; i<len; i++) {
+                request_cmd=unescape(request_array[i].replace(/\+/g, " ")); // url decode
+                if(i==0)
+                    send_cmd = "RESET_GPIO_"+request_cmd;
+                else 
+                    send_cmd = send_cmd+"--RESET_GPIO_"+request_cmd;
+            }
+        }
+        else {
+            var request0=request.argument;
+            request0=unescape(request0.replace(/\+/g, " ")); // url decode
+            send_cmd = "RESET_GPIO_"+request0;
+        }
+
+        console.log("\r\nSEND_CMD: "+send_cmd);
 
         var options = {
             host: 'workbench01',
             port: '8080',
             method: 'GET',
-            path: "/gpio/RESET_GPIO_"+request.argument
+            path: "/gpio/"+send_cmd
         };
 
         var req = http.request(options, function(res) {
