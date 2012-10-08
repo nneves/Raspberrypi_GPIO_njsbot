@@ -1,7 +1,17 @@
 
 const config = require('./config.js').settings;
 
-var http = require('http');
+var http = require('http'),
+    hostaddr = "localhost";
+
+// Processing parameters
+if(process.argv[2] !== undefined && process.argv[2].trim() !== '') {
+    hostaddr = process.argv[2];
+    console.log("Host Address parameter defined: "+hostaddr);    
+}
+else {
+    console.log("Using default Host Address: "+hostaddr);
+}    
 
 execute_bot();
 
@@ -204,7 +214,7 @@ function execute_bot() {
         console.log("\r\nSEND_CMD: "+send_cmd);
 
         var options = {
-            host: 'workbench01',
+            host: hostaddr,
             port: '8080',
             method: 'GET',
             path: "/gpio/"+send_cmd
@@ -275,7 +285,7 @@ function execute_bot() {
         console.log("\r\nSEND_CMD: "+send_cmd);
 
         var options = {
-            host: 'workbench01',
+            host: hostaddr,
             port: '8080',
             method: 'GET',
             path: "/gpio/"+send_cmd
