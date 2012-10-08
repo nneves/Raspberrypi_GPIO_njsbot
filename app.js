@@ -3,7 +3,7 @@ const config = require('./config.js').settings;
 
 var http = require('http'),
     hostaddr = "localhost",
-    hostport = 8081;
+    hostport = 8080;
 
 // Processing parameters
 if(process.argv[2] !== undefined && process.argv[2].trim() !== '') {
