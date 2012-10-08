@@ -27,7 +27,7 @@ npm install
 
 Run Google Talk Bot
 ```bash
-node app.js localhost
+node app.js localhost 8081
 
 or (for quick testing)
 
